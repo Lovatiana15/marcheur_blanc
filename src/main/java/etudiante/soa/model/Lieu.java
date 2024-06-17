@@ -15,7 +15,7 @@ public class Lieu {
         this.nom_du_lieu = nom_du_lieu;
     }
 
-    public void ajouter_une_liason_entre_deux_lieux(Lieu autre_lieu) {
+    public void ajouter_une_liason_entre_deux_lieux (Lieu autre_lieu) {
         if (autre_lieu != null && !liaisons.contains(autre_lieu)) {
             this.liaisons.add(autre_lieu);
         }

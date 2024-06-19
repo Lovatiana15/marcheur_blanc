@@ -1,48 +1,24 @@
 package etudiante.soa.model;
 
+import etudiante.soa.model.Lieu;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 public class Marcheur {
-    private Lieu pointDeDepart;
-    private Lieu destination;
-    private Carte plan;
+    private Lieu positionActuelle;
+    private Set<Lieu> lieuxVisites = new HashSet<>();
 
-    public Marcheur(Lieu pointDeDepart, Lieu destination, Carte plan) {
-        this.pointDeDepart = pointDeDepart;
-        this.destination = destination;
-        this.plan = plan;
+    public Marcheur(Lieu pointDeDepart) {
+        this.positionActuelle = pointDeDepart;
+        this.lieuxVisites.add(pointDeDepart);
     }
-
-    public List<Lieu> alle_vers() {
-        List<Lieu> chemin = new ArrayList<>();
-        Set<Lieu> visites = new HashSet<>();
-        Lieu actuel = pointDeDepart;
-        Random random = new Random();
-
-        while (!actuel.equals(destination)) {
-            chemin.add(actuel);
-            visites.add(actuel);
-
-            List<Lieu> lieu_non_visites = new ArrayList<>();
-            for (Lieu lieu_apres : actuel.getLiaisons()) {
-                if (!visites.contains(lieu_apres)) {
-                    lieu_non_visites.add(lieu_apres);
-                }
-            }
-
-            if (lieu_non_visites .isEmpty()) {
-                lieu_non_visites .addAll(actuel.getLiaisons());
-            }
-
-            actuel = lieu_non_visites .get(random.nextInt(lieu_non_visites .size()));
-        }
-
-        chemin.add(destination);
-        return chemin;
+    public void se_deplacer_vers(Lieu nouveauLieu) {
+        this.positionActuelle = nouveauLieu;
+        this.lieuxVisites.add(nouveauLieu);
     }
 }

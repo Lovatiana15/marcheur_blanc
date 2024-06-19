@@ -3,6 +3,7 @@ package test;
 import etudiante.soa.model.Carte;
 import etudiante.soa.model.Lieu;
 import etudiante.soa.model.Marcheur;
+import etudiante.soa.simule.Guide;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,10 +25,11 @@ public class MarcheAleatoireTest {
         nexta = new Lieu("Nexta");
         boulevard = new Lieu("Boulevard");
         marais = new Lieu("Marais");
-        sekolintsika = new Lieu("sekolintsika");
+        sekolintsika = new Lieu("Sekolintsika");
 
         hei.ajouter_une_liason_entre_deux_lieux(pullman);
         hei.ajouter_une_liason_entre_deux_lieux(balancoire);
+        hei.ajouter_une_liason_entre_deux_lieux(sekolintsika);
 
         pullman.ajouter_une_liason_entre_deux_lieux(hei);
         pullman.ajouter_une_liason_entre_deux_lieux(nexta);
@@ -48,9 +50,7 @@ public class MarcheAleatoireTest {
 
         marais.ajouter_une_liason_entre_deux_lieux(sekolintsika);
         sekolintsika.ajouter_une_liason_entre_deux_lieux(marais);
-
         sekolintsika.ajouter_une_liason_entre_deux_lieux(hei);
-        hei.ajouter_une_liason_entre_deux_lieux(sekolintsika);
 
         plan.ajouterLieu(hei);
         plan.ajouterLieu(pullman);
@@ -63,34 +63,34 @@ public class MarcheAleatoireTest {
     }
 
     @Test
-    public void test_marche_aleatoire_HEI_Vers_ESTI() {
-        Marcheur Bjarni = new Marcheur(hei, esti, plan);
-        List<Lieu> marche = Bjarni.alle_vers();
-
+    public void testMarcheAleatoireHEIVersESTI() {
+        Marcheur bjarni = new Marcheur(hei);
+        Guide guide = new Guide(bjarni);
+        List<Lieu> marche = guide.guider_vers(esti);
         Assertions.assertEquals(hei, marche.get(0));
         Assertions.assertEquals(esti, marche.get(marche.size() - 1));
-
         for (int i = 0; i < marche.size() - 1; i++) {
-            Lieu lieu_actuel = marche.get(i);
-            Lieu lieu_suivant = marche.get(i + 1);
-            Assertions.assertTrue(lieu_actuel.getLiaisons().contains(lieu_suivant));
+            Lieu lieuActuel = marche.get(i);
+            Lieu lieuSuivant = marche.get(i + 1);
+            Assertions.assertTrue(lieuActuel.getLiaisons().contains(lieuSuivant));
         }
         marche.forEach(lieu -> System.out.print(lieu.getNom_du_lieu() + " -> "));
     }
 
     @Test
-    public void test_marche_aleatoire_Marais_vers_Pullman() {
-        Marcheur John = new Marcheur(marais, pullman, plan);
-        List<Lieu> marche = John.alle_vers();
+    public void testMarcheAleatoireMaraisVersPullman() {
+        Marcheur john = new Marcheur(marais);
+        Guide guide = new Guide(john);
 
+        List<Lieu> marche = guide.guider_vers(pullman);
         Assertions.assertEquals(marais, marche.get(0));
         Assertions.assertEquals(pullman, marche.get(marche.size() - 1));
-
         for (int i = 0; i < marche.size() - 1; i++) {
-            Lieu actuel = marche.get(i);
-            Lieu suivant = marche.get(i + 1);
-            Assertions.assertTrue(actuel.getLiaisons().contains(suivant));
+            Lieu lieuActuel = marche.get(i);
+            Lieu lieuSuivant = marche.get(i + 1);
+            Assertions.assertTrue(lieuActuel.getLiaisons().contains(lieuSuivant));
         }
+
         marche.forEach(lieu -> System.out.print(lieu.getNom_du_lieu() + " -> "));
     }
 }

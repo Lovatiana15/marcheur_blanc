@@ -14,5 +14,8 @@ public class Carte {
             lieux.put(lieu.getNom_du_lieu(), lieu);
         }
     }
+    public Lieu obtenirLieu(String nom_du_lieu) {
+        return lieux.get(nom_du_lieu);
+    }
 
 }
